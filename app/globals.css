@@ -1,0 +1,193 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #FBF6EC;
+  color: #161412;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* =========================================================
+   Responsive overrides — `!important` is intentional because
+   the components use inline styles for layout.
+   Breakpoints :
+   - Mobile  : <= 720px
+   - Tablet  : 721px – 1024px
+   ========================================================= */
+
+/* ---------- VNav ---------- */
+@media (max-width: 720px) {
+  .v-nav-inner { padding: 0 18px !important; height: 52px !important; }
+  .v-nav-links { gap: 14px !important; }
+  .v-nav-cta { padding: 8px 14px !important; font-size: 10.5px !important; }
+}
+
+/* ---------- HOME : hero strip ---------- */
+@media (max-width: 720px) {
+  .v-section { padding-left: 18px !important; padding-right: 18px !important; }
+  .v-hero-strip {
+    flex-direction: column !important;
+    gap: 4px !important;
+    align-items: center !important;
+    font-size: 10px !important;
+    text-align: center !important;
+    padding-bottom: 12px !important;
+  }
+  .v-hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .v-hero-text {
+    padding: 28px 0 24px !important;
+    border-right: none !important;
+    border-bottom: 1.5px solid #161412 !important;
+  }
+  .v-hero-paragraphs {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    margin-top: 18px !important;
+  }
+  .v-hero-photo { min-height: 280px !important; }
+  .v-hero-ctas { padding-top: 22px !important; }
+}
+
+/* ---------- HOME : sommaire ---------- */
+@media (max-width: 720px) {
+  .v-sommaire { padding: 36px 18px !important; }
+  .v-sommaire-head { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
+  .v-sommaire-cols {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  .v-sommaire-col {
+    padding: 0 !important;
+    border-left: none !important;
+    border-top: 1px solid rgba(22,20,18,.18);
+    padding-top: 18px !important;
+    margin-left: 0 !important;
+  }
+  .v-sommaire-col:first-child {
+    border-top: none !important;
+    padding-top: 0 !important;
+  }
+}
+@media (min-width: 721px) and (max-width: 1024px) {
+  .v-sommaire-cols { gap: 4px !important; }
+}
+
+/* ---------- HOME : formule ---------- */
+@media (max-width: 720px) {
+  .v-formule {
+    grid-template-columns: 1fr !important;
+  }
+  .v-formule-photo {
+    border-right: none !important;
+    border-bottom: 1.5px solid #161412 !important;
+    min-height: 240px !important;
+  }
+  .v-formule-text {
+    padding: 36px 0 36px !important;
+  }
+}
+
+/* ---------- HOME : lieu ---------- */
+@media (max-width: 720px) {
+  .v-lieu { margin-top: 36px !important; padding: 0 18px !important; }
+  .v-lieu-inner { padding: 26px !important; }
+  .v-lieu-photo { min-height: 280px !important; }
+}
+
+/* ---------- HOME : réservation strip ---------- */
+@media (max-width: 720px) {
+  .v-cta-strip {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 40px 18px !important;
+    gap: 22px !important;
+  }
+}
+
+/* ---------- HOME : footer ---------- */
+@media (max-width: 720px) {
+  .v-footer {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 32px 18px !important;
+    gap: 24px !important;
+  }
+  .v-footer-hours { gap: 28px !important; }
+}
+
+/* ---------- CARTE ---------- */
+@media (max-width: 720px) {
+  .v-carte-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  .v-carte-header > div:last-child {
+    text-align: left !important;
+  }
+  .v-carte-filter { padding: 12px 18px !important; }
+  .v-carte-filter-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .v-carte-search { width: 100% !important; min-width: 0 !important; }
+  .v-carte-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+  .v-carte-section-head { flex-wrap: wrap !important; }
+  .v-carte-wines {
+    padding: 28px 22px !important;
+  }
+  .v-carte-cta {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 36px 18px !important;
+    gap: 16px !important;
+  }
+  .v-carte-wrap { padding: 28px 18px 60px !important; }
+  .v-carte-top { padding: 22px 18px 0 !important; }
+}
+
+/* ---------- RÉSERVATION ---------- */
+@media (max-width: 860px) {
+  .v-resa-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .v-resa-aside {
+    position: static !important;
+    order: -1;
+  }
+  .v-resa-photo {
+    height: 120px !important;
+  }
+}
+@media (max-width: 720px) {
+  .v-resa-wrap { padding: 22px 18px 60px !important; }
+  .v-resa-stepper { gap: 6px 0 !important; }
+  .v-resa-stepper > div span:last-child { font-size: 11px !important; }
+  .v-resa-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .v-resa-service-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .v-resa-success-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
