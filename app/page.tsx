@@ -379,6 +379,57 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* fidélité */}
+      <section style={{ background: V.cream, borderTop: `1.5px solid ${V.ink}` }}>
+        <div
+          className="v-fidelite"
+          style={{
+            maxWidth: 1180,
+            margin: '0 auto',
+            padding: '48px 32px',
+            display: 'grid',
+            gridTemplateColumns: '1fr auto',
+            gap: 32,
+            alignItems: 'center',
+          }}
+        >
+          <div>
+            <div
+              style={{
+                fontFamily: V.sans,
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '.18em',
+                textTransform: 'uppercase',
+                color: V.saf,
+                marginBottom: 10,
+              }}
+            >
+              Programme fidélité
+            </div>
+            <div style={{ fontFamily: V.serif, fontSize: 'clamp(24px,3.5vw,40px)', lineHeight: 1.05 }}>
+              Chaque repas compte. Accumulez des points et débloquez des avantages exclusifs.
+            </div>
+            <div className="v-fidelite-stats" style={{ display: 'flex', gap: 32, marginTop: 20 }}>
+              {[
+                ['1€ = 1 pt', 'Chaque dépense'],
+                ['Café offert', 'Dès 100 pts'],
+                ['Dessert offert', 'Dès 250 pts'],
+                ['Dîner pour 2', 'Dès 1000 pts'],
+              ].map(([val, label]) => (
+                <div key={val}>
+                  <div style={{ fontFamily: V.serif, fontSize: 22, color: V.saf }}>{val}</div>
+                  <div style={{ fontFamily: V.sans, fontSize: 11.5, color: V.muted, marginTop: 2 }}>{label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <VButton variant="gold" size="lg" onClick={() => router.push('/connexion')}>
+            Créer mon compte <VIcon name="arrow" size={15} />
+          </VButton>
+        </div>
+      </section>
+
       {/* footer */}
       <footer
         className="v-footer"

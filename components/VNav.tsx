@@ -52,6 +52,9 @@ export default function VNav() {
           <Link href="/carte" style={linkStyle('/carte')}>
             La carte
           </Link>
+          <Link href="/compte" style={linkStyle('/compte')}>
+            Mon compte
+          </Link>
           <Link href="/reservation" style={{ textDecoration: 'none' }}>
             <span
               className="v-nav-cta"
