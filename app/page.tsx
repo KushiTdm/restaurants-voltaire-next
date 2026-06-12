@@ -437,6 +437,7 @@ export default function HomePage() {
           background: V.cream,
           padding: '40px 48px',
           display: 'flex',
+          flexWrap: 'wrap',
           justifyContent: 'space-between',
           alignItems: 'flex-end',
           gap: 40,
@@ -482,6 +483,36 @@ export default function HomePage() {
             </div>
             <div style={{ fontFamily: V.serif, fontSize: 22 }}>19h — 23h00</div>
           </div>
+        </div>
+        <div
+          style={{
+            flexBasis: '100%',
+            marginTop: 8,
+            paddingTop: 20,
+            borderTop: `1px solid ${V.line}`,
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 10,
+            fontFamily: V.sans,
+            fontSize: 13,
+            color: V.muted,
+          }}
+        >
+          <span>© 2026 Voltaire — Tous droits réservés</span>
+          <span>
+            Conçu &amp; développé par{' '}
+            <a
+              href="https://neuraweb.tech"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: V.brick, textDecoration: 'none', fontWeight: 600 }}
+            >
+              NeuraWeb
+            </a>
+            {' '}— web, automatisation &amp; intégration IA
+          </span>
         </div>
       </footer>
     </div>
