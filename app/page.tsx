@@ -8,14 +8,16 @@ import VIcon from '@/components/VIcon';
 import { V } from '@/lib/tokens';
 import { MENU } from '@/lib/menu-data';
 import { PHOTOS } from '@/lib/photos';
+import { useI18n } from '@/lib/i18n';
 
 export default function HomePage() {
   const router = useRouter();
+  const { t } = useI18n();
   const pick = (cat: string) => MENU.filter((m) => m.cat === cat).slice(0, 4);
   const cols: [string, string, ReturnType<typeof pick>][] = [
-    ['I', 'Pour commencer', pick('entrees')],
-    ['II', 'Les plats', pick('plats')],
-    ['III', 'La fin', pick('desserts')],
+    ['I', t('home.sommaire.entrees'), pick('entrees')],
+    ['II', t('home.sommaire.plats'), pick('plats')],
+    ['III', t('home.sommaire.desserts'), pick('desserts')],
   ];
 
   return (
@@ -44,18 +46,19 @@ export default function HomePage() {
               paddingBottom: 16,
             }}
           >
-            <span>Cantine — Paris XI</span>
-            <span style={{ color: V.brick }}>N°11 · Été</span>
-            <span>Mar–Sam · Midi &amp; Soir</span>
+            <span>{t('hero.tagline.left')}</span>
+            <span style={{ color: V.brick }}>{t('hero.tagline.mid')}</span>
+            <span>{t('hero.tagline.right')}</span>
           </div>
           <div
             data-fx="hero-title"
             style={{
               fontFamily: V.serif,
-              fontSize: 'clamp(64px, 15vw, 188px)',
+              fontSize: 'clamp(54px, 15vw, 188px)',
               lineHeight: 0.9,
               letterSpacing: '-0.01em',
               willChange: 'transform',
+              wordBreak: 'normal',
             }}
           >
             Voltaire
@@ -80,19 +83,19 @@ export default function HomePage() {
               flexDirection: 'column',
             }}
           >
-            <VLabel>L&apos;édito · le chef</VLabel>
+            <VLabel>{t('hero.edito.kicker')}</VLabel>
             <h1
               data-fx="fade-up"
               style={{
                 fontFamily: V.serif,
-                fontSize: 'clamp(32px,5vw,64px)',
+                fontSize: 'clamp(28px,5vw,64px)',
                 lineHeight: 1.0,
                 fontWeight: 400,
                 margin: '16px 0 0',
                 letterSpacing: '-0.01em',
               }}
             >
-              On cuisine ce que le marché décide. Vous, vous n&apos;avez qu&apos;à vous installer.
+              {t('hero.edito.title')}
             </h1>
             <div
               className="v-hero-paragraphs"
@@ -109,12 +112,10 @@ export default function HomePage() {
               }}
             >
               <p data-fx-item style={{ margin: 0 }}>
-                Boulevard Voltaire, une grande salle, des banquettes en velours et une carte qui tient
-                sur une page — réécrite chaque matin.
+                {t('hero.edito.p1')}
               </p>
               <p data-fx-item style={{ margin: 0 }}>
-                Le midi file vite, le soir s&apos;étire. On y vient seul au comptoir comme à douze
-                autour d&apos;une grande tablée.
+                {t('hero.edito.p2')}
               </p>
             </div>
             <div
@@ -122,10 +123,10 @@ export default function HomePage() {
               style={{ marginTop: 'auto', paddingTop: 30, display: 'flex', gap: 12, flexWrap: 'wrap' }}
             >
               <VButton variant="ink" onClick={() => router.push('/reservation')}>
-                Réserver une table
+                {t('hero.cta.book')}
               </VButton>
               <VButton variant="outline" onClick={() => router.push('/carte')}>
-                Lire la carte <VIcon name="arrow" size={15} />
+                {t('hero.cta.menu')} <VIcon name="arrow" size={15} />
               </VButton>
             </div>
           </div>
@@ -135,7 +136,7 @@ export default function HomePage() {
             alt="Salle du restaurant Voltaire un soir de service"
             from={V.saf}
             to={V.brick}
-            caption="Service du soir, salle comble"
+            caption={t('hero.photo.caption')}
             tag="salle"
             overlay={0.18}
             parallax
@@ -170,12 +171,12 @@ export default function HomePage() {
             data-fx="fade-up"
             style={{
               fontFamily: V.serif,
-              fontSize: 'clamp(32px,4vw,54px)',
+              fontSize: 'clamp(30px,4vw,54px)',
               lineHeight: 1,
               margin: 0,
             }}
           >
-            Le sommaire du jour
+            {t('home.sommaire.title')}
           </h2>
           <button
             onClick={() => router.push('/carte')}
@@ -195,7 +196,7 @@ export default function HomePage() {
               padding: 0,
             }}
           >
-            Toute la carte <VIcon name="arrow" size={15} />
+            {t('home.sommaire.all')} <VIcon name="arrow" size={15} />
           </button>
         </div>
         <div className="v-sommaire-cols" data-fx-group data-fx-stagger="110" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 0 }}>
@@ -275,13 +276,13 @@ export default function HomePage() {
               justifyContent: 'center',
             }}
           >
-            <VLabel>La formule du midi</VLabel>
+            <VLabel>{t('home.formule.label')}</VLabel>
             <div
               data-fx="fade-up"
               data-fx-from-y="40"
               style={{
                 fontFamily: V.serif,
-                fontSize: 'clamp(72px,10vw,120px)',
+                fontSize: 'clamp(64px,10vw,120px)',
                 lineHeight: 0.9,
                 margin: '8px 0 0',
               }}
@@ -291,21 +292,20 @@ export default function HomePage() {
             <div
               style={{
                 fontFamily: V.serif,
-                fontSize: 'clamp(24px,3vw,34px)',
+                fontSize: 'clamp(22px,3vw,34px)',
                 fontStyle: 'italic',
                 color: V.brick,
                 marginTop: 2,
               }}
             >
-              entrée · plat · café
+              {t('home.formule.sub')}
             </div>
             <p style={{ fontSize: 15, lineHeight: 1.62, color: '#3a342c', maxWidth: 400, marginTop: 18 }}>
-              Servie tous les midis, du mardi au samedi. La carte courte du marché, dressée en moins de
-              quarante-cinq minutes — chrono en main.
+              {t('home.formule.desc')}
             </p>
             <div style={{ marginTop: 24 }}>
               <VButton variant="gold" onClick={() => router.push('/reservation')}>
-                Réserver le midi
+                {t('home.formule.cta')}
               </VButton>
             </div>
           </div>
@@ -327,11 +327,11 @@ export default function HomePage() {
           style={{ minHeight: 360, display: 'flex', alignItems: 'flex-end' }}
         >
           <div className="v-lieu-inner" data-fx="fade-up" style={{ position: 'relative', zIndex: 2, padding: 44 }}>
-            <VLabel color="rgba(255,255,255,.78)">Le lieu</VLabel>
+            <VLabel color="rgba(255,255,255,.78)">{t('home.lieu.label')}</VLabel>
             <div
               style={{
                 fontFamily: V.serif,
-                fontSize: 'clamp(28px,4vw,46px)',
+                fontSize: 'clamp(24px,4vw,46px)',
                 color: '#fff',
                 maxWidth: 620,
                 lineHeight: 1.08,
@@ -339,7 +339,7 @@ export default function HomePage() {
                 textShadow: '0 2px 18px rgba(0,0,0,.4)',
               }}
             >
-              Banquettes de velours, nappes blanches et le brouhaha des grands soirs.
+              {t('home.lieu.title')}
             </div>
           </div>
         </VPhoto>
@@ -361,20 +361,20 @@ export default function HomePage() {
           }}
         >
           <div data-fx="fade-up">
-            <VLabel color={V.saf}>Réservation</VLabel>
+            <VLabel color={V.saf}>{t('home.cta.label')}</VLabel>
             <div
               style={{
                 fontFamily: V.serif,
-                fontSize: 'clamp(34px,5vw,64px)',
+                fontSize: 'clamp(30px,5vw,64px)',
                 lineHeight: 1,
                 marginTop: 8,
               }}
             >
-              Gardez-nous une chaise.
+              {t('home.cta.title')}
             </div>
           </div>
           <VButton variant="gold" size="lg" onClick={() => router.push('/reservation')}>
-            Réserver une table <VIcon name="arrow" size={16} />
+            {t('home.cta.button')} <VIcon name="arrow" size={16} />
           </VButton>
         </div>
       </section>
@@ -405,27 +405,27 @@ export default function HomePage() {
                 marginBottom: 10,
               }}
             >
-              Programme fidélité
+              {t('home.fid.label')}
             </div>
-            <div style={{ fontFamily: V.serif, fontSize: 'clamp(24px,3.5vw,40px)', lineHeight: 1.05 }}>
-              Chaque repas compte. Accumulez des points et débloquez des avantages exclusifs.
+            <div style={{ fontFamily: V.serif, fontSize: 'clamp(22px,3.5vw,40px)', lineHeight: 1.1 }}>
+              {t('home.fid.title')}
             </div>
-            <div className="v-fidelite-stats" style={{ display: 'flex', gap: 32, marginTop: 20 }}>
+            <div className="v-fidelite-stats" style={{ display: 'flex', gap: 32, marginTop: 20, flexWrap: 'wrap' }}>
               {[
-                ['1€ = 1 pt', 'Chaque dépense'],
-                ['Café offert', 'Dès 100 pts'],
-                ['Dessert offert', 'Dès 250 pts'],
-                ['Dîner pour 2', 'Dès 1000 pts'],
+                [t('home.fid.s1.v'), t('home.fid.s1.l')],
+                [t('home.fid.s2.v'), t('home.fid.s2.l')],
+                [t('home.fid.s3.v'), t('home.fid.s3.l')],
+                [t('home.fid.s4.v'), t('home.fid.s4.l')],
               ].map(([val, label]) => (
                 <div key={val}>
-                  <div style={{ fontFamily: V.serif, fontSize: 22, color: V.saf }}>{val}</div>
+                  <div style={{ fontFamily: V.serif, fontSize: 20, color: V.saf }}>{val}</div>
                   <div style={{ fontFamily: V.sans, fontSize: 11.5, color: V.muted, marginTop: 2 }}>{label}</div>
                 </div>
               ))}
             </div>
           </div>
           <VButton variant="gold" size="lg" onClick={() => router.push('/connexion')}>
-            Créer mon compte <VIcon name="arrow" size={15} />
+            {t('home.fid.cta')} <VIcon name="arrow" size={15} />
           </VButton>
         </div>
       </section>
@@ -462,7 +462,7 @@ export default function HomePage() {
                 marginBottom: 10,
               }}
             >
-              Le midi
+              {t('footer.lunch')}
             </div>
             <div style={{ fontFamily: V.serif, fontSize: 22 }}>12h — 14h30</div>
           </div>
@@ -478,7 +478,7 @@ export default function HomePage() {
                 marginBottom: 10,
               }}
             >
-              Le soir
+              {t('footer.dinner')}
             </div>
             <div style={{ fontFamily: V.serif, fontSize: 22 }}>19h — 23h00</div>
           </div>

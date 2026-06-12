@@ -4,6 +4,10 @@
   padding: 0;
 }
 
+html, body {
+  max-width: 100%;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -19,19 +23,31 @@ button, input, select, textarea {
   font-family: inherit;
 }
 
+img, svg, video {
+  max-width: 100%;
+  height: auto;
+}
+
 /* =========================================================
    Responsive overrides — `!important` is intentional because
-   the components use inline styles for layout.
+   components use inline styles for layout.
    Breakpoints :
    - Mobile  : <= 720px
    - Tablet  : 721px – 1024px
    ========================================================= */
 
 /* ---------- VNav ---------- */
+.v-nav-burger { display: none; }
+.v-nav-drawer { display: none; }
+
+@media (max-width: 860px) {
+  .v-nav-links { display: none !important; }
+  .v-nav-burger { display: inline-flex !important; }
+  .v-nav-drawer { display: flex !important; }
+}
+
 @media (max-width: 720px) {
   .v-nav-inner { padding: 0 18px !important; height: 52px !important; }
-  .v-nav-links { gap: 14px !important; }
-  .v-nav-cta { padding: 8px 14px !important; font-size: 10.5px !important; }
 }
 
 /* ---------- HOME : hero strip ---------- */
@@ -60,6 +76,7 @@ button, input, select, textarea {
   }
   .v-hero-photo { min-height: 280px !important; }
   .v-hero-ctas { padding-top: 22px !important; }
+  .v-hero-ctas button { flex: 1 1 auto; min-width: 0; }
 }
 
 /* ---------- HOME : sommaire ---------- */
@@ -115,6 +132,21 @@ button, input, select, textarea {
     align-items: flex-start !important;
     padding: 40px 18px !important;
     gap: 22px !important;
+  }
+}
+
+/* ---------- HOME : fidélité ---------- */
+@media (max-width: 860px) {
+  .v-fidelite {
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+    padding: 38px 18px !important;
+    align-items: flex-start !important;
+  }
+  .v-fidelite-stats {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 18px 16px !important;
   }
 }
 
@@ -190,4 +222,85 @@ button, input, select, textarea {
   .v-resa-success-grid {
     grid-template-columns: 1fr !important;
   }
+  .v-resa-party {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important;
+  }
+  .v-resa-party button {
+    width: 100% !important;
+    height: 56px !important;
+    font-size: 22px !important;
+    padding: 0 !important;
+  }
+  .v-resa-party button.v-resa-party-more {
+    grid-column: span 4 !important;
+    font-size: 13px !important;
+  }
+  .v-resa-actions {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .v-resa-actions button { width: 100% !important; }
+  .v-resa-actions-reverse {
+    flex-direction: column-reverse !important;
+  }
+}
+
+/* ---------- COMPTE ---------- */
+@media (max-width: 720px) {
+  .v-compte-wrap { padding: 28px 18px 60px !important; }
+  .v-compte-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+  }
+  .v-compte-points {
+    grid-template-columns: 1fr !important;
+    padding: 22px 22px !important;
+    gap: 18px !important;
+  }
+  .v-compte-points-status { text-align: left !important; }
+  .v-compte-points-status > div:last-child { display: inline-block; }
+  .v-compte-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+  }
+  .v-compte-tabs button {
+    flex: 0 0 auto !important;
+    padding: 12px 16px !important;
+    white-space: nowrap;
+  }
+  .v-compte-actions {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .v-compte-actions button { width: 100% !important; }
+  .v-compte-history-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+  .v-compte-history-row > div:last-child {
+    text-align: left !important;
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+  }
+  .v-compte-promos {
+    grid-template-columns: 1fr !important;
+  }
+  .v-compte-prefs {
+    grid-template-columns: 1fr !important;
+  }
+  .v-compte-adr {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ---------- CONNEXION ---------- */
+@media (max-width: 720px) {
+  .v-login-wrap { padding: 36px 18px 60px !important; }
 }

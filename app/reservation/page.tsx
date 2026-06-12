@@ -7,8 +7,15 @@ import VIcon from '@/components/VIcon';
 import VPhoto from '@/components/VPhoto';
 import { V } from '@/lib/tokens';
 import { PHOTOS } from '@/lib/photos';
+import { track } from '@/lib/analytics';
 
 const STEPS = ['Couverts', 'Date & service', 'Heure', 'Vos coordonnées'];
+
+const PROMOS: Record<string, { label: string; off: number }> = {
+  VOLTAIRE10: { label: '−10% sur la note', off: 10 },
+  BIENVENUE: { label: 'Coupe offerte', off: 0 },
+  ANNIV: { label: 'Dessert offert', off: 0 },
+};
 
 const fmtDay = (d: Date) =>
   new Intl.DateTimeFormat('fr-FR', { weekday: 'short' }).format(d).replace('.', '');
@@ -43,6 +50,8 @@ type Reservation = {
   email: string;
   occasion: string;
   notes: string;
+  promo: string;
+  optIn: boolean;
 };
 
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
@@ -105,6 +114,8 @@ export default function ReservationPage() {
     email: '',
     occasion: 'Aucune',
     notes: '',
+    promo: '',
+    optIn: true,
   });
   const [touched, setTouched] = useState(false);
   const [ref] = useState(() => 'VOL-' + Math.random().toString(36).slice(2, 6).toUpperCase());
@@ -113,7 +124,14 @@ export default function ReservationPage() {
 
   useEffect(() => {
     try { window.scrollTo({ top: 0 }); } catch {}
-  }, [step, done]);
+    track('reservation_step_view', { step });
+  }, [step]);
+  useEffect(() => {
+    if (done) track('reservation_confirmed', { party: r.party, service: r.service, ref });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [done]);
+
+  const promoValid = !!PROMOS[r.promo.trim().toUpperCase()];
 
   const set = (patch: Partial<Reservation>) => setR((x) => ({ ...x, ...patch }));
 
@@ -152,6 +170,7 @@ export default function ReservationPage() {
     { k: 'Date', v: r.dateIdx !== null ? fmtFull(DAYS[r.dateIdx].d) : null },
     { k: 'Service', v: r.service ? (r.service === 'midi' ? 'Le midi' : 'Le soir') : null },
     { k: 'Heure', v: r.time },
+    ...(promoValid ? [{ k: 'Code promo', v: r.promo.trim().toUpperCase() }] : []),
   ];
 
   if (done) {
@@ -276,7 +295,68 @@ export default function ReservationPage() {
                 « {r.notes} »
               </div>
             )}
+            {promoValid && (
+              <div
+                style={{
+                  marginTop: 14,
+                  padding: '10px 12px',
+                  background: 'rgba(63,107,58,.08)',
+                  border: '1px solid #3f6b3a',
+                  color: '#3f6b3a',
+                  fontSize: 12.5,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                }}
+              >
+                <VIcon name="check" size={13} />
+                <span>
+                  Code <strong>{r.promo.trim().toUpperCase()}</strong> appliqué ·{' '}
+                  {PROMOS[r.promo.trim().toUpperCase()].label}
+                </span>
+              </div>
+            )}
           </div>
+
+          {r.optIn && (
+            <div
+              style={{
+                marginTop: 24,
+                padding: '18px 20px',
+                background: '#fff',
+                border: `1px solid ${V.line}`,
+                textAlign: 'left',
+                fontSize: 13,
+                color: V.muted,
+                lineHeight: 1.6,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 10.5,
+                  fontWeight: 700,
+                  letterSpacing: '.14em',
+                  textTransform: 'uppercase',
+                  color: V.saf,
+                  marginBottom: 8,
+                }}
+              >
+                ✦ Automatisations programmées
+              </div>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 6 }}>
+                <VIcon name="check" size={13} stroke={2} />
+                <span>E-mail de confirmation — <strong>à l&apos;instant</strong></span>
+              </div>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 6 }}>
+                <span style={{ width: 13, textAlign: 'center', color: V.saf }}>•</span>
+                <span>Rappel automatique — <strong>J-1, 18h00</strong></span>
+              </div>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                <span style={{ width: 13, textAlign: 'center', color: V.saf }}>•</span>
+                <span>Demande d&apos;avis post-repas — <strong>J+1, 14h00</strong></span>
+              </div>
+            </div>
+          )}
           <div
             style={{
               display: 'flex',
@@ -386,7 +466,7 @@ export default function ReservationPage() {
                 <p style={{ fontSize: 14.5, color: V.muted, margin: '0 0 24px' }}>
                   Choisissez le nombre de couverts.
                 </p>
-                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <div className="v-resa-party" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                     <button
                       key={n}
@@ -407,6 +487,7 @@ export default function ReservationPage() {
                     </button>
                   ))}
                   <button
+                    className="v-resa-party-more"
                     onClick={() => set({ party: 9 })}
                     style={{
                       height: 64,
@@ -668,12 +749,78 @@ export default function ReservationPage() {
                       />
                     </Field>
                   </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <Field label="Code promo (facultatif)">
+                      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                        <input
+                          value={r.promo}
+                          onChange={(e) => set({ promo: e.target.value.toUpperCase() })}
+                          placeholder="VOLTAIRE10 · BIENVENUE · ANNIV"
+                          style={{ ...inputStyle(), flex: '1 1 200px', textTransform: 'uppercase' }}
+                        />
+                        {r.promo && (
+                          <div
+                            style={{
+                              padding: '12px 14px',
+                              border: `1.5px solid ${promoValid ? '#3f6b3a' : V.brick}`,
+                              background: promoValid ? 'rgba(63,107,58,.08)' : 'rgba(140,59,43,.06)',
+                              color: promoValid ? '#3f6b3a' : V.brick,
+                              fontSize: 13,
+                              fontWeight: 600,
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 6,
+                            }}
+                          >
+                            {promoValid ? (
+                              <>
+                                <VIcon name="check" size={13} />{' '}
+                                {PROMOS[r.promo.trim().toUpperCase()].label}
+                              </>
+                            ) : (
+                              'Code inconnu'
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </Field>
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label
+                      style={{
+                        display: 'flex',
+                        gap: 10,
+                        alignItems: 'flex-start',
+                        cursor: 'pointer',
+                        fontSize: 13.5,
+                        color: V.muted,
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={r.optIn}
+                        onChange={(e) => set({ optIn: e.target.checked })}
+                        style={{
+                          width: 18,
+                          height: 18,
+                          marginTop: 2,
+                          accentColor: V.ink,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span>
+                        Je souhaite recevoir le rappel de réservation par e-mail (J-1) et les offres
+                        saisonnières — désabonnement en 1 clic.
+                      </span>
+                    </label>
+                  </div>
                 </div>
               </div>
             )}
 
             {/* nav */}
-            <div style={{ display: 'flex', gap: 12, marginTop: 36, alignItems: 'center' }}>
+            <div className="v-resa-actions v-resa-actions-reverse" style={{ display: 'flex', gap: 12, marginTop: 36, alignItems: 'center' }}>
               <VButton variant="ghost" onClick={back}>
                 <VIcon name="arrowLeft" size={15} /> {step === 0 ? 'Annuler' : 'Retour'}
               </VButton>

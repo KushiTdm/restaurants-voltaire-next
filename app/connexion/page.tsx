@@ -5,6 +5,7 @@ import VButton from '@/components/VButton';
 import VLabel from '@/components/VLabel';
 import VIcon from '@/components/VIcon';
 import { V } from '@/lib/tokens';
+import { track } from '@/lib/analytics';
 
 type Mode = 'login' | 'register';
 
@@ -30,6 +31,7 @@ export default function ConnexionPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    track(mode === 'login' ? 'login' : 'signup', { email });
     // Demo: store a mock session and redirect to account
     localStorage.setItem(
       'voltaire_user',
@@ -40,7 +42,7 @@ export default function ConnexionPage() {
 
   return (
     <div style={{ fontFamily: V.sans, color: V.ink, background: V.paper, minHeight: '100vh' }}>
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '56px 24px 80px' }}>
+      <div className="v-login-wrap" style={{ maxWidth: 480, margin: '0 auto', padding: '56px 24px 80px' }}>
         {/* header */}
         <div style={{ borderBottom: `2px solid ${V.ink}`, paddingBottom: 16, marginBottom: 36 }}>
           <VLabel>Espace client</VLabel>
